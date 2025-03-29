@@ -1,0 +1,13 @@
+# Dockerfile-ros2
+FROM ros:humble-ros-base
+
+# Install ROS 2 dependencies
+RUN apt-get update
+
+# Set ROS 2 environment
+ENV ROS_DISTRO humble
+WORKDIR /root/ros2_ws
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build"
+SHELL ["/bin/bash"]
+# Default entrypoint for ROS 2 Foxy
+CMD ["bash", "-c", "source /opt/ros/humble/setup.bash && sleep infinity"]

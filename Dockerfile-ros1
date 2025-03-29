@@ -1,0 +1,13 @@
+# Dockerfile-ros1
+FROM ros:noetic-ros-base
+
+# Install necessary ROS 1 packages
+RUN apt-get update
+
+# Set the ROS environment
+ENV ROS_DISTRO noetic
+WORKDIR /root
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash"
+SHELL ["/bin/bash"]
+# Default entrypoint for ROS Noetic
+CMD ["bash", "-c", "source /opt/ros/noetic/setup.bash && roscore"]

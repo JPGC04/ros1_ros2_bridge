@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  ros1:
+    build:
+      context: .
+      dockerfile: Dockerfile-ros1
+    container_name: ros1_noetic
+    networks:
+      - ros_bridge_net
+    volumes:
+      - .:/root/catkin_ws
+    environment:
+      - ROS_MASTER_URI=http://ros1_noetic:11311
+    ports:
+      - "9090:9090"  # For rosbridge websocket
+    tty: true
+
+  ros2:
+    build:
+      context: .
+      dockerfile: Dockerfile-ros2
+    container_name: ros2_foxy
+    networks:
+      - ros_bridge_net
+    volumes:
+      - .:/root/ros2_ws
+    #environment:
+      #- ROS_DOMAIN_ID=42
+    ports:
+      - "8080:8080"  # For rosbridge websocket
+    tty: true
+
+  bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile-bridge
+    container_name: ros1_ros2_bridge
+    networks:
+      - ros_bridge_net
+    depends_on:
+      - ros1
+      - ros2
+    environment:
+      - ROS_MASTER_URI=http://ros1_noetic:11311
+    tty: true
+
+networks:
+  ros_bridge_net:
+    driver: bridge

@@ -1,0 +1,8 @@
+FROM ros:foxy-ros1-bridge-focal
+
+SHELL ["/bin/bash"]
+
+ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+ENV ROS_DOMAIN_ID=0
+
+CMD ["bash", "-c", "source /opt/ros/foxy/setup.bash && sleep infinity"]
